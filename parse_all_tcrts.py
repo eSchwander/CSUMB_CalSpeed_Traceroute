@@ -20,15 +20,15 @@ import datetime
 
 
 def main():
-    #open csvs
-    #file creation/opening happens here
-    #daily file
+	#check for needed directories
+	dirCheck()
+
+    #csv creation/opening happens here
     currentDate = currDate()
     dailyFile = open("./csvResults/" + currentDate + "_daily_tcrt_results.csv", 'a')
     if os.path.getsize("./csvResults/" + currentDate + "_daily_tcrt_results.csv") == 0:
         headers = str(getHeaders()).replace("'","").replace(" ","")[1:-1]
         dailyFile.write(headers + "\n")
-    #all file
     allFile = open("./csvResults/all_tcrt_test_results.csv", 'a')
     if os.path.getsize("./csvResults/all_tcrt_test_results.csv") == 0:
         headers = str(getHeaders()).replace("'","").replace(" ","")[1:-1]
@@ -40,7 +40,6 @@ def main():
         fs = open(file, 'rt')
         allLines = fs.readlines()
         fs.close()
-        #shutil.move(file, "./ProcessedData")
         firstLine = str(allLines.pop(0))
         if "tablet" in firstLine.lower():
             tocsv.DeviceType = "Tablet"
@@ -111,20 +110,27 @@ def main():
     #close csvs
     dailyFile.close()
     allFile.close()
+	
+def dirCheck():
+	#This function checks for needed directories and creates them if needed.
+	directories = ["ProcessedData", "UploadData","csvResults"]
+	for dir in directories:
+		if not os.path.isdir("./" + dir):
+			os.makedirs("./" + dir)
 
 def currDate():
-        #Everything is finally written to a daily csv and an all tcrt results csv
-        #But first we need to get the current date in the proper format
-        currentDate = str(datetime.date.today())
-        currentDate = currentDate.replace('-','_')
-        currentDate += "_"
-        convertDate = list(currentDate)
-        convertDate.extend(currentDate[0:4])
-        convertDate = convertDate[5:]
-        currentDate = ''
-        for x in convertDate:
-            currentDate += x
-        return currentDate
+	#Everything is finally written to a daily csv and an all tcrt results csv
+	#But first we need to get the current date in the proper format
+	currentDate = str(datetime.date.today())
+	currentDate = currentDate.replace('-','_')
+	currentDate += "_"
+	convertDate = list(currentDate)
+	convertDate.extend(currentDate[0:4])
+	convertDate = convertDate[5:]
+	currentDate = ''
+	for x in convertDate:
+		currentDate += x
+	return currentDate
 
 class Test:
     
