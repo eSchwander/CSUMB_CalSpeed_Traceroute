@@ -1,2 +1,9 @@
 #The following file contains sensitive info:
 tcrtIPs.py
+
+#Untracked files/folders:
+*.pyc
+*.pyproj
+*.sln
+*.suo
+__pycache__/
